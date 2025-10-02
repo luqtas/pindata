@@ -1,0 +1,138 @@
+[gd_scene load_steps=4 format=3 uid="uid://c32njb1b3t8oy"]
+
+[ext_resource type="Script" uid="uid://b1r75r0smrdsl" path="res://main.gd" id="1_272bh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ig7tw"]
+bg_color = Color(0.46229059, 0.46229064, 0.4622904, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ig7tw"]
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(600, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 720.0
+script = ExtResource("1_272bh")
+
+[node name="graph" type="Control" parent="."]
+custom_minimum_size = Vector2(600, 400)
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 400.0
+
+[node name="list" type="ItemList" parent="."]
+layout_mode = 0
+offset_top = 400.0
+offset_right = 600.0
+offset_bottom = 720.0
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 26
+theme_override_styles/panel = SubResource("StyleBoxFlat_ig7tw")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ig7tw")
+allow_search = false
+item_count = 3
+item_0/text = "table"
+item_1/text = "score"
+item_2/text = "player"
+
+[node name="line" type="LineEdit" parent="."]
+visible = false
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_right = 250.0
+offset_bottom = 44.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 26
+
+[node name="arrows" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 95.0
+offset_top = 600.0
+offset_right = 134.99994
+offset_bottom = 640.0
+
+[node name="up" type="Button" parent="arrows"]
+layout_mode = 0
+offset_left = -57.0
+offset_top = 31.0
+offset_right = 8.0
+offset_bottom = 96.0
+text = "up"
+
+[node name="down" type="Button" parent="arrows"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 31.0
+offset_right = 97.0
+offset_bottom = 96.0
+text = "down"
+
+[node name="left" type="Button" parent="arrows"]
+layout_mode = 0
+offset_left = -57.0
+offset_top = -49.0
+offset_right = 8.0
+offset_bottom = 16.0
+text = "left"
+
+[node name="right" type="Button" parent="arrows"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = -49.0
+offset_right = 97.0
+offset_bottom = 16.0
+text = "right"
+
+[node name="mods" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 465.0
+offset_top = 600.0
+offset_right = 504.99963
+offset_bottom = 640.0
+
+[node name="lock" type="Button" parent="mods"]
+layout_mode = 0
+offset_left = -57.0
+offset_top = 31.0
+offset_right = 8.0
+offset_bottom = 96.0
+toggle_mode = true
+text = "LOCK"
+
+[node name="enter" type="Button" parent="mods"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 31.0
+offset_right = 97.0
+offset_bottom = 96.0
+text = "ENTER"
+
+[node name="delete" type="Button" parent="mods"]
+layout_mode = 0
+offset_left = -57.0
+offset_top = -49.0
+offset_right = 8.0
+offset_bottom = 16.0
+text = "X"
+
+[node name="redo" type="Button" parent="mods"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = -49.0
+offset_right = 97.0
+offset_bottom = 16.0
+text = "REDO"
+
+[connection signal="draw" from="line" to="." method="_on_line_draw"]
+[connection signal="pressed" from="arrows/up" to="." method="_on_up_pressed"]
+[connection signal="pressed" from="arrows/down" to="." method="_on_down_pressed"]
+[connection signal="pressed" from="arrows/left" to="." method="_on_left_pressed"]
+[connection signal="pressed" from="arrows/right" to="." method="_on_right_pressed"]
+[connection signal="button_down" from="mods/enter" to="." method="_on_enter_pressed"]
+[connection signal="button_down" from="mods/delete" to="." method="_on_delete_pressed"]
+[connection signal="button_down" from="mods/redo" to="." method="_on_redo_pressed"]
