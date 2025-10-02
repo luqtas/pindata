@@ -6,11 +6,14 @@ func _ready() -> void:
 	$list.grab_focus()
 	$list.select(2)
 	load_data()
+<<<<<<< HEAD
 	
 	# animating stuff
 	#var tween = get_tree().create_tween()
 	#tween.tween_property($line, "position", Vector2(44, -50), 0.25)
 	#tween.tween_callback($line.queue_free)
+=======
+>>>>>>> 8fb6ff7 (minor tweaks)
 
 var save_path = "user://save/data.save"
 var last = []
@@ -63,6 +66,10 @@ func _input(event: InputEvent) -> void:
 func mods(x):
 	if $list.is_selected(0):
 		if x == "accept" and !$line.visible:
+<<<<<<< HEAD
+=======
+			$line.virtual_keyboard_type = 0
+>>>>>>> 8fb6ff7 (minor tweaks)
 			$line.show()
 		elif x == "delete":
 			if $list.get_item_text(0) == "table":
@@ -151,11 +158,20 @@ func mods(x):
 			graph()
 		elif !$line.visible:
 			if x == "accept":
+<<<<<<< HEAD
 				$line.show()
 				return
 
 	elif $list.is_selected(2):
 		if x == "accept" and !$line.visible:
+=======
+				$line.virtual_keyboard_type = 2
+				$line.show()
+
+	elif $list.is_selected(2):
+		if x == "accept" and !$line.visible:
+			$line.virtual_keyboard_type = 0
+>>>>>>> 8fb6ff7 (minor tweaks)
 			$line.show()
 		elif x == "delete":
 			if !data.keys().has($list.get_item_text(2)):
@@ -171,6 +187,10 @@ func mods(x):
 		elif $line.visible:
 			if x == "accept":
 				if $line.text == "":
+<<<<<<< HEAD
+=======
+					$line.hide()
+>>>>>>> 8fb6ff7 (minor tweaks)
 					$list.grab_focus()
 					return
 				$list.set_item_text(2, $line.text)
