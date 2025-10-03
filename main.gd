@@ -6,15 +6,9 @@ func _ready() -> void:
 	$list.grab_focus()
 	$list.select(2)
 	load_data()
-<<<<<<< HEAD
-	
-	# animating stuff
-	#var tween = get_tree().create_tween()
-	#tween.tween_property($line, "position", Vector2(44, -50), 0.25)
-	#tween.tween_callback($line.queue_free)
-=======
->>>>>>> 8fb6ff7 (minor tweaks)
 
+# why inside a folder? for Syncthing! otherwise we would need to mess
+# with exclude.lists
 var save_path = "user://save/data.save"
 var last = []
 func save_data():
@@ -43,6 +37,15 @@ func load_data():
 			DirAccess.make_dir_absolute('user://save')
 func _exit_tree() -> void:
 	save_data()
+# Android stuff, as closing the app the way i do, doesn't run _exit_tree
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_data()
+		get_tree().quit()
+	elif what == NOTIFICATION_APPLICATION_PAUSED:
+		save_data()
+	elif what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		save_data()
 
 var tables = []
 var data = {}
@@ -66,10 +69,7 @@ func _input(event: InputEvent) -> void:
 func mods(x):
 	if $list.is_selected(0):
 		if x == "accept" and !$line.visible:
-<<<<<<< HEAD
-=======
 			$line.virtual_keyboard_type = 0
->>>>>>> 8fb6ff7 (minor tweaks)
 			$line.show()
 		elif x == "delete":
 			if $list.get_item_text(0) == "table":
@@ -92,14 +92,11 @@ func mods(x):
 						$list.set_item_text(0, $line.text)
 						$line.hide()
 						$line.clear()
-						graph()
 						$list.grab_focus()
+						graph()
 						return
 					$list.set_item_text(0, $line.text)
 					tables.append($line.text)
-					$line.hide()
-					$line.clear()
-					$list.grab_focus()
 					for i in data.keys().size():
 						var z = data.keys()
 						var player = z.get(i)
@@ -107,6 +104,9 @@ func mods(x):
 							data[player].get_or_add(tables.get(ii))
 							if !data[player][tables.get(ii)]:
 								data[player][tables.get(ii)] = []
+					$line.hide()
+					$line.clear()
+					$list.grab_focus()
 					save_data()
 					graph()
 			elif x == "cancel":
@@ -123,15 +123,12 @@ func mods(x):
 					$list.grab_focus()
 					return
 				if $line.text.is_valid_int():
-					data[$list.get_item_text(2)].get_or_add($list.get_item_text(0))
-					if !data[$list.get_item_text(2)][$list.get_item_text(0)]:
-						data[$list.get_item_text(2)][$list.get_item_text(0)] = []
 					data[$list.get_item_text(2)][$list.get_item_text(0)].append(int($line.text))
 				$line.hide()
 				$line.clear()
+				$list.grab_focus()
 				save_data()
 				graph()
-				$list.grab_focus()
 			elif x == "cancel":
 				$line.hide()
 				$line.clear()
@@ -158,24 +155,15 @@ func mods(x):
 			graph()
 		elif !$line.visible:
 			if x == "accept":
-<<<<<<< HEAD
-				$line.show()
-				return
-
-	elif $list.is_selected(2):
-		if x == "accept" and !$line.visible:
-=======
 				$line.virtual_keyboard_type = 2
 				$line.show()
 
 	elif $list.is_selected(2):
 		if x == "accept" and !$line.visible:
 			$line.virtual_keyboard_type = 0
->>>>>>> 8fb6ff7 (minor tweaks)
 			$line.show()
 		elif x == "delete":
 			if !data.keys().has($list.get_item_text(2)):
-				$list.grab_focus()
 				return
 			data.erase($list.get_item_text(2))
 			if data == {}:
@@ -187,33 +175,26 @@ func mods(x):
 		elif $line.visible:
 			if x == "accept":
 				if $line.text == "":
-<<<<<<< HEAD
-=======
 					$line.hide()
->>>>>>> 8fb6ff7 (minor tweaks)
 					$list.grab_focus()
 					return
-				$list.set_item_text(2, $line.text)
-				if data.has($line.text):
+				elif data.has($line.text):
 					$list.set_item_text(2, $line.text)
 					$line.hide()
 					$line.clear()
 					$list.grab_focus()
 					return
+				$list.set_item_text(2, $line.text)
 				data.get_or_add($list.get_item_text(2))
 				data[$list.get_item_text(2)] = {}
+				for i in tables.size():
+					data[$list.get_item_text(2)].get_or_add(i)
+					data[$list.get_item_text(2)][tables.get(i)] = []
 				$line.hide()
 				$line.clear()
-				for i in data.keys().size():
-					var z = data.keys()
-					var player = z.get(i)
-					for ii in tables.size():
-						data[player].get_or_add(tables.get(ii))
-						if !data[player][tables.get(ii)]:
-								data[player][tables.get(ii)] = []
+				$list.grab_focus()
 				save_data()
 				graph()
-				$list.grab_focus()
 			elif x == "cancel":
 				$line.hide()
 				$line.clear()

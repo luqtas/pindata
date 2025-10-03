@@ -13,12 +13,17 @@ config_version=5
 config/name="pindata"
 run/main_scene="uid://c32njb1b3t8oy"
 config/features=PackedStringArray("4.5", "Mobile")
+boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://icon.svg"
 
 [display]
 
 window/size/viewport_width=600
 window/size/viewport_height=720
+window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [input]
 
@@ -32,3 +37,4 @@ ui_accept={
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
