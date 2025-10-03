@@ -12,7 +12,7 @@ when 'score' is selected
   · DELETE, removes all the points for the selected player
 
 when 'player' is selected
-  · ENTER brings a prompt for adding a new player, if the player already exists it gets focused
-  · DELETE the player
+  · ENTER, brings a prompt for adding a new player, if the player already exists it gets focused
+  · DELETE, deletes the player and every score tied with it
 
 buttons on the screen were meant to facilitate mobile usage, gotta test although... the "LOCK" button unlocks "X" (DELETE) and "REDO" (BACKSPACE) functionality
