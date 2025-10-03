@@ -281,9 +281,25 @@ func graph():
 	chart_properties.x_label = "games played"
 	chart_properties.y_label = "score"
 	chart_properties.show_legend = true
-	chart.y_labels_function = func(value: float): return str(int(value))
+	chart.y_labels_function = func(value: int): return str(add_commas_to_number(value))
 	chart.x_labels_function = func(value: float): return str(int(value))
 	chart.plot(draws, chart_properties)
+
+func add_commas_to_number(input_number : int) -> String:
+	# from https://www.reddit.com/r/godot/comments/9iw4ie/printing_integers_with_commas_as_thousands/
+	# (thanks) sillysniper18 comment,
+	var number_as_string : String = str(input_number)
+	var output_string : String = ""
+	var last_index : int = number_as_string.length() - 1
+	#For each digit in the number...
+	for index in range(number_as_string.length()):
+		#add that digit to the output string, and then...
+		output_string = output_string + number_as_string.substr(index,1)
+		#if the index is at the thousandths, millions, billionths place, etc.
+		#i.e. where you would put a comma, then insert a comma after that digit.
+		if (last_index - index) % 3 == 0 and index != last_index:
+			output_string = output_string + " "
+	return output_string
 
 func _on_line_draw() -> void:
 	$line.grab_focus()
