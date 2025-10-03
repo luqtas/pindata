@@ -15,4 +15,4 @@ when 'player' is selected
   · ENTER, brings a prompt for adding a new player, if the player already exists it gets focused
   · DELETE, deletes the player and every score tied with it
 
-buttons on the screen were meant to facilitate mobile usage, gotta test although... the "LOCK" button unlocks "X" (DELETE) and "REDO" (BACKSPACE) functionality
+buttons on the screen were meant to facilitate mobile usage... the "LOCK" button unlocks "X" (DELETE) and "REDO" (BACKSPACE) functionality
