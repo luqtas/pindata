@@ -281,6 +281,8 @@ func graph():
 	chart_properties.x_label = "games played"
 	chart_properties.y_label = "score"
 	chart_properties.show_legend = true
+	chart.y_labels_function = func(value: float): return str(int(value))
+	chart.x_labels_function = func(value: float): return str(int(value))
 	chart.plot(draws, chart_properties)
 
 func _on_line_draw() -> void:
