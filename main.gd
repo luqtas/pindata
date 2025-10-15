@@ -10,6 +10,7 @@ func _ready() -> void:
 # why inside a folder? for Syncthing! otherwise we would need to mess
 # with exclude.lists
 var save_path = "user://save/data.save"
+
 var last = []
 func save_data():
 	last.clear()
@@ -87,23 +88,26 @@ func mods(x):
 			graph()
 		elif $line.visible:
 			if x == "accept":
-				if $line.text != "":
-					if tables.has($line.text):
-						$list.set_item_text(0, $line.text)
-						$line.hide()
-						$line.clear()
-						$list.grab_focus()
-						graph()
-						return
+				# thanks for the whitespace checker
+				# https://godotforums.org/d/35000-how-to-check-if-a-string-contains-only-whitespace-characters
+				var ws = RegEx.new()
+				ws.compile("\\s*")
+				if $line.text.length() == ws.search($line.text).get_string(0).length():
+					$line.hide()
+					$line.clear()
+					$list.grab_focus()
+					return
+				elif tables.has($line.text):
+					$list.set_item_text(0, $line.text)
+					$list.select(1)
+					$line.hide()
+					$line.clear()
+					$list.grab_focus()
+					graph()
+					return
+				else:
 					$list.set_item_text(0, $line.text)
 					tables.append($line.text)
-					for i in data.keys().size():
-						var z = data.keys()
-						var player = z.get(i)
-						for ii in tables.size():
-							data[player].get_or_add(tables.get(ii))
-							if !data[player][tables.get(ii)]:
-								data[player][tables.get(ii)] = []
 					$line.hide()
 					$line.clear()
 					$list.grab_focus()
@@ -123,6 +127,9 @@ func mods(x):
 					$list.grab_focus()
 					return
 				if $line.text.is_valid_int():
+					if !data[$list.get_item_text(2)].has($list.get_item_text(0)):
+						data[$list.get_item_text(2)].get_or_add($list.get_item_text(0))
+						data[$list.get_item_text(2)][$list.get_item_text(0)] = []
 					data[$list.get_item_text(2)][$list.get_item_text(0)].append(int($line.text))
 				$line.hide()
 				$line.clear()
@@ -174,12 +181,15 @@ func mods(x):
 			graph()
 		elif $line.visible:
 			if x == "accept":
-				if $line.text == "":
+				var ws = RegEx.new()
+				ws.compile("\\s*")
+				if $line.text.length() == ws.search($line.text).get_string(0).length():
 					$line.hide()
 					$list.grab_focus()
 					return
 				elif data.has($line.text):
 					$list.set_item_text(2, $line.text)
+					$list.select(1)
 					$line.hide()
 					$line.clear()
 					$list.grab_focus()
@@ -187,9 +197,6 @@ func mods(x):
 				$list.set_item_text(2, $line.text)
 				data.get_or_add($list.get_item_text(2))
 				data[$list.get_item_text(2)] = {}
-				for i in tables.size():
-					data[$list.get_item_text(2)].get_or_add(i)
-					data[$list.get_item_text(2)][tables.get(i)] = []
 				$line.hide()
 				$line.clear()
 				$list.grab_focus()
@@ -238,6 +245,17 @@ func graph():
 		return
 	elif !data[$list.get_item_text(2)]:
 		return
+	else:
+		for n in data.keys().size():
+			var player = data.keys().get(n)
+			if data[player].has($list.get_item_text(0)):
+				$graph.show()
+				break
+			else:
+				if n == (data.keys().size() - 1):
+					$graph.hide()
+					return
+				continue
 	var chart_scene: PackedScene = load("res://addons/easy_charts/control_charts/chart.tscn")
 	var chart: Chart = chart_scene.instantiate()
 	add_child(chart)
@@ -246,8 +264,9 @@ func graph():
 	var draws: Array[Function] = []
 	var color = Color(1.0, 1.0, 1.0, 1.0)
 	for n in data.keys().size():
-		var z = data.keys()
-		var player = z.get(n)
+		var player = data.keys().get(n)
+		if !data[player].has($list.get_item_text(0)):
+			continue
 		var score = data[player][$list.get_item_text(0)]
 		if score == []:
 			score = [0]
@@ -278,8 +297,8 @@ func graph():
 		)
 		draws.append(draw)
 	var chart_properties := ChartProperties.new()
-	chart_properties.x_label = "games played"
-	chart_properties.y_label = "score"
+	#chart_properties.x_label = "games played"
+	#chart_properties.y_label = "score"
 	chart_properties.show_legend = true
 	chart.y_labels_function = func(value: int): return str(add_commas_to_number(value))
 	chart.x_labels_function = func(value: float): return str(int(value))
