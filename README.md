@@ -7,7 +7,7 @@ when 'table' is selected
   · DELETE, removes the tables and all the players data associated with
 
 when 'score' is selected
-  · ENTER, brings the prompt for adding a score, only numbers are accepted
+  · ENTER, brings the prompt for adding a score, only numbers are accepted, if the entry is blank ("") it will show the average score in 10 entries
   · BACKSPACE, deletes the last added data point
   · DELETE, removes all the points for the selected player
 
