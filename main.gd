@@ -131,6 +131,11 @@ func mods(x):
 						data[$list.get_item_text(2)].get_or_add($list.get_item_text(0))
 						data[$list.get_item_text(2)][$list.get_item_text(0)] = []
 					data[$list.get_item_text(2)][$list.get_item_text(0)].append(int($line.text))
+				elif $line.text == "":
+					if average == false:
+						average = true
+					else:
+						average = false
 				$line.hide()
 				$line.clear()
 				$list.grab_focus()
@@ -240,6 +245,8 @@ func cycle(y):
 			else:
 				$list.set_item_text(2, data.keys().get(b))
 
+var average = false
+var avgt = 10
 func graph():
 	if  data == {}:
 		return
@@ -270,9 +277,24 @@ func graph():
 		var score = data[player][$list.get_item_text(0)]
 		if score == []:
 			score = [0]
+			
+		elif average == true:
+			var i = int(score.size() / avgt)
+			print(i)
+			var ii = 0
+			var iii = []
+			var avg = score.duplicate(true)
+			for o in avgt:
+				for oo in i:
+					ii = ii + avg.get(0)
+					avg.remove_at(0)
+				iii.append(ii/i)
+				ii = 0
+			score = iii
+
 		var gp = []
 		for o in score.size():
-			gp.append(o)
+			gp.append(o + 1)
 		if n == 0:
 			color = Color("ff0000")
 		elif n == 1:
@@ -293,7 +315,7 @@ func graph():
 			gp,
 			score,
 			player,
-			{type = Function.Type.LINE, marker = Function.Marker.SQUARE, color = color}
+			{type = Function.Type.LINE, marker = Function.Marker.CIRCLE, color = color}
 		)
 		draws.append(draw)
 	var chart_properties := ChartProperties.new()
