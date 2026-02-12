@@ -1,3 +1,14 @@
+TODO
+  · add a confirmation screen for deleting stuff and at least one C-z for reversing the last score point (backspace)
+  · some general stats for a player (same logic of entrying a blank input on the score) in a dedicated window
+    · total games played
+    · all score points of all tables summed?
+    · most played tables
+    · high score for the selected table (or should we show that on the main screen?)
+  · ideas for a collaborative/non-competitive tournament scheme/mode/window are welcome!
+  · remove the mobile UI?
+
+  
 a pinball score recorder and visualizer because a spreadsheet would be too easy!
 
 if you have a keyboard, arrows cycle through the list, the item selected effects the others keys; ENTER, DELETE and BACKSPACE
