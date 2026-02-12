@@ -16,6 +16,7 @@ func save_data():
 	last.clear()
 	last.append($list.get_item_text(0)) # last table at the app
 	last.append($list.get_item_text(2)) # last user
+	last.append(average) # was average activated?
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
 	file.store_var(tables)
 	file.store_var(data)
@@ -29,6 +30,7 @@ func load_data():
 		last = file.get_var()
 		$list.set_item_text(0, last.get(0)) # set last table app had
 		$list.set_item_text(2, last.get(1)) # last user
+		average = last.get(2) # toggles average
 		$list.select(1) # set focus at score
 		vertical = 1
 		graph()
@@ -279,18 +281,18 @@ func graph():
 			score = [0]
 			
 		elif average == true:
-			var i = int(score.size() / avgt)
-			print(i)
-			var ii = 0
-			var iii = []
-			var avg = score.duplicate(true)
-			for o in avgt:
-				for oo in i:
-					ii = ii + avg.get(0)
-					avg.remove_at(0)
-				iii.append(ii/i)
-				ii = 0
-			score = iii
+			if avgt < int(score.size()):
+				var i = int(score.size() / avgt)
+				var ii = 0
+				var iii = []
+				var avg = score.duplicate(true)
+				for o in avgt:
+					for oo in i:
+						ii = ii + avg.get(0)
+						avg.remove_at(0)
+					iii.append(ii/i)
+					ii = 0
+				score = iii
 
 		var gp = []
 		for o in score.size():
