@@ -74,7 +74,7 @@ func mods(x):
 		if x == "accept" and !$line.visible:
 			$line.virtual_keyboard_type = 0
 			$line.show()
-		elif x == "delete":
+		elif x == "delete" and !$line.visible:
 			if $list.get_item_text(0) == "table":
 				return
 			for n in data.keys().size():
@@ -215,37 +215,38 @@ func mods(x):
 				$list.grab_focus()
 
 func cycle(y):
-	if $list.is_selected(0):
-		if tables.size() == 0:
-			return
-		if tables.size() >= 1:
-			var a = $list.get_item_text(0)
-			var b = tables.find(a)
-			if y == "right":
-				b = b + 1
-			elif y == "left":
-				b = b - 1
-			if b >= tables.size():
-				$list.set_item_text(0, tables.get(0))
-			elif b <= -1:
-				$list.set_item_text(0, tables.back())
-			else:
-				$list.set_item_text(0, tables.get(b))
-			graph()
-	if $list.is_selected(2):
-		if data.size() >= 1:
-			var a = $list.get_item_text(2)
-			var b = data.keys().find(a)
-			if y == "right":
-				b = b + 1
-			elif y == "left":
-				b = b - 1
-			if b >= data.keys().size():
-				$list.set_item_text(2, data.keys().get(0))
-			elif b <= -1:
-				$list.set_item_text(2, data.keys().back())
-			else:
-				$list.set_item_text(2, data.keys().get(b))
+	if !$line.visible:
+		if $list.is_selected(0):
+			if tables.size() == 0:
+				return
+			if tables.size() >= 1:
+				var a = $list.get_item_text(0)
+				var b = tables.find(a)
+				if y == "right":
+					b = b + 1
+				elif y == "left":
+					b = b - 1
+				if b >= tables.size():
+					$list.set_item_text(0, tables.get(0))
+				elif b <= -1:
+					$list.set_item_text(0, tables.back())
+				else:
+					$list.set_item_text(0, tables.get(b))
+				graph()
+		if $list.is_selected(2):
+			if data.size() >= 1:
+				var a = $list.get_item_text(2)
+				var b = data.keys().find(a)
+				if y == "right":
+					b = b + 1
+				elif y == "left":
+					b = b - 1
+				if b >= data.keys().size():
+					$list.set_item_text(2, data.keys().get(0))
+				elif b <= -1:
+					$list.set_item_text(2, data.keys().back())
+				else:
+					$list.set_item_text(2, data.keys().get(b))
 
 var average = false
 var avgt = 10
