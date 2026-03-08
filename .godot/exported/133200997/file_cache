@@ -1,0 +1,5 @@
+res://addons/easy_charts/control_charts/chart.tscn::c603f6faffe87b8373003781182c46a2::1766195500::res://.godot/exported/133200997/export-04ae890b036004aeedb0e2f57dfdf854-chart.scn
+res://addons/easy_charts/utilities/containers/data_tooltip/data_tooltip.tscn::6b11909aca76f7b84c58cb95a0d5b9d5::1759432335::res://.godot/exported/133200997/export-fe6dec1dc37ba314bd25551a760bad4e-data_tooltip.scn
+res://addons/easy_charts/utilities/containers/legend/function_label.tscn::1efa5f7b7da0856e980cf1fb56e6842d::1759432335::res://.godot/exported/133200997/export-cbd950603853f44b5f617335d88563cc-function_label.scn
+res://addons/easy_charts/utilities/containers/legend/function_legend.tscn::d4a41538fa5621397b7bee8bd6093647::1759432335::res://.godot/exported/133200997/export-81dd362871f4dc451235a924b89fb3c6-function_legend.scn
+res://main.tscn::dbf20a0ad342b5a3c06cabb5aea5b47d::1772300086::res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn
