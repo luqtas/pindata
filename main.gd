@@ -1,10 +1,10 @@
 extends Control
 
 func _ready() -> void:
-	# we set the focus and select the first item on the $$VBoxContainer/list
+	# we set the focus and select the first item on the $$list
 	# otherwise user needs to press down arrow
-	$VBoxContainer/list.grab_focus()
-	$VBoxContainer/list.select(2)
+	$list.grab_focus()
+	$list.select(2)
 	load_data()
 
 # why inside a folder? for Syncthing! otherwise we would need to mess
@@ -14,8 +14,8 @@ var save_path = "user://save/data.save"
 var last = []
 func save_data():
 	last.clear()
-	last.append($VBoxContainer/list.get_item_text(0)) # last table at the app
-	last.append($VBoxContainer/list.get_item_text(2)) # last user
+	last.append($list.get_item_text(0)) # last table at the app
+	last.append($list.get_item_text(2)) # last user
 	last.append(average) # was average activated?
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
 	file.store_var(tables)
@@ -28,10 +28,10 @@ func load_data():
 		tables = file.get_var()
 		data = file.get_var()
 		last = file.get_var()
-		$VBoxContainer/list.set_item_text(0, last.get(0)) # set last table app had
-		$VBoxContainer/list.set_item_text(2, last.get(1)) # last user
+		$list.set_item_text(0, last.get(0)) # set last table app had
+		$list.set_item_text(2, last.get(1)) # last user
 		average = last.get(2) # toggles average
-		$VBoxContainer/list.select(1) # set focus at score
+		$list.select(1) # set focus at score
 		vertical = 1
 		graph()
 	else:
@@ -70,22 +70,22 @@ func _input(event: InputEvent) -> void:
 		mods("delete")
 
 func mods(x):
-	if $VBoxContainer/list.is_selected(0):
+	if $list.is_selected(0):
 		if x == "accept" and !$line.visible:
 			$line.virtual_keyboard_type = 0
 			$line.show()
 		elif x == "delete" and !$line.visible:
-			if $VBoxContainer/list.get_item_text(0) == "table":
+			if $list.get_item_text(0) == "table":
 				return
 			for n in data.keys().size():
 				var z = data.keys()
 				var y = z.get(n)
-				data[y].erase($VBoxContainer/list.get_item_text(0))
-			tables.erase($VBoxContainer/list.get_item_text(0))
+				data[y].erase($list.get_item_text(0))
+			tables.erase($list.get_item_text(0))
 			if tables.size() - 1 == -1:
-				$VBoxContainer/list.set_item_text(0, "table")
+				$list.set_item_text(0, "table")
 			else:
-				$VBoxContainer/list.set_item_text(0, tables.get(tables.size() - 1))
+				$list.set_item_text(0, tables.get(tables.size() - 1))
 			save_data()
 			graph()
 		elif $line.visible:
@@ -97,42 +97,42 @@ func mods(x):
 				if $line.text.length() == ws.search($line.text).get_string(0).length():
 					$line.hide()
 					$line.clear()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					return
 				elif tables.has($line.text):
-					$VBoxContainer/list.set_item_text(0, $line.text)
-					$VBoxContainer/list.select(1)
+					$list.set_item_text(0, $line.text)
+					$list.select(1)
 					$line.hide()
 					$line.clear()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					graph()
 					return
 				else:
-					$VBoxContainer/list.set_item_text(0, $line.text)
+					$list.set_item_text(0, $line.text)
 					tables.append($line.text)
 					$line.hide()
 					$line.clear()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					save_data()
 					graph()
 			elif x == "cancel":
 				$line.hide()
 				$line.clear()
-				$VBoxContainer/list.grab_focus()
+				$list.grab_focus()
 
-	elif $VBoxContainer/list.is_selected(1):
+	elif $list.is_selected(1):
 		if $line.visible:
 			if x == "accept":
 				if data.keys() == [] or tables == []:
 					$line.hide()
 					$line.clear()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					return
 				if $line.text.is_valid_int():
-					if !data[$VBoxContainer/list.get_item_text(2)].has($VBoxContainer/list.get_item_text(0)):
-						data[$VBoxContainer/list.get_item_text(2)].get_or_add($VBoxContainer/list.get_item_text(0))
-						data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)] = []
-					data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)].append(int($line.text))
+					if !data[$list.get_item_text(2)].has($list.get_item_text(0)):
+						data[$list.get_item_text(2)].get_or_add($list.get_item_text(0))
+						data[$list.get_item_text(2)][$list.get_item_text(0)] = []
+					data[$list.get_item_text(2)][$list.get_item_text(0)].append(int($line.text))
 				elif $line.text == "":
 					if average == false:
 						average = true
@@ -140,31 +140,31 @@ func mods(x):
 						average = false
 				$line.hide()
 				$line.clear()
-				$VBoxContainer/list.grab_focus()
+				$list.grab_focus()
 				save_data()
 				graph()
 			elif x == "cancel":
 				$line.hide()
 				$line.clear()
-				$VBoxContainer/list.grab_focus()
+				$list.grab_focus()
 		elif x == "backspace":
 			if data.keys() == []:
 				return
-			elif !data[$VBoxContainer/list.get_item_text(2)]:
+			elif !data[$list.get_item_text(2)]:
 				return
-			elif data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)] == []:
+			elif data[$list.get_item_text(2)][$list.get_item_text(0)] == []:
 				return
-			data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)].erase(data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)].back())
+			data[$list.get_item_text(2)][$list.get_item_text(0)].erase(data[$list.get_item_text(2)][$list.get_item_text(0)].back())
 			save_data()
 			graph()
 		elif x == "delete":
 			if data.keys() == []:
 				return
-			elif !data[$VBoxContainer/list.get_item_text(2)]:
+			elif !data[$list.get_item_text(2)]:
 				return
-			elif data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)] == []:
+			elif data[$list.get_item_text(2)][$list.get_item_text(0)] == []:
 				return
-			data[$VBoxContainer/list.get_item_text(2)][$VBoxContainer/list.get_item_text(0)] = []
+			data[$list.get_item_text(2)][$list.get_item_text(0)] = []
 			save_data()
 			graph()
 		elif !$line.visible:
@@ -172,18 +172,18 @@ func mods(x):
 				$line.virtual_keyboard_type = 2
 				$line.show()
 
-	elif $VBoxContainer/list.is_selected(2):
+	elif $list.is_selected(2):
 		if x == "accept" and !$line.visible:
 			$line.virtual_keyboard_type = 0
 			$line.show()
 		elif x == "delete":
-			if !data.keys().has($VBoxContainer/list.get_item_text(2)):
+			if !data.keys().has($list.get_item_text(2)):
 				return
-			data.erase($VBoxContainer/list.get_item_text(2))
+			data.erase($list.get_item_text(2))
 			if data == {}:
-				$VBoxContainer/list.set_item_text(2, "player")
+				$list.set_item_text(2, "player")
 			else:
-				$VBoxContainer/list.set_item_text(2, data.keys().max())
+				$list.set_item_text(2, data.keys().max())
 			save_data()
 			graph()
 		elif $line.visible:
@@ -192,92 +192,92 @@ func mods(x):
 				ws.compile("\\s*")
 				if $line.text.length() == ws.search($line.text).get_string(0).length():
 					$line.hide()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					return
 				elif data.has($line.text):
-					$VBoxContainer/list.set_item_text(2, $line.text)
-					$VBoxContainer/list.select(1)
+					$list.set_item_text(2, $line.text)
+					$list.select(1)
 					$line.hide()
 					$line.clear()
-					$VBoxContainer/list.grab_focus()
+					$list.grab_focus()
 					return
-				$VBoxContainer/list.set_item_text(2, $line.text)
-				data.get_or_add($VBoxContainer/list.get_item_text(2))
-				data[$VBoxContainer/list.get_item_text(2)] = {}
+				$list.set_item_text(2, $line.text)
+				data.get_or_add($list.get_item_text(2))
+				data[$list.get_item_text(2)] = {}
 				$line.hide()
 				$line.clear()
-				$VBoxContainer/list.grab_focus()
+				$list.grab_focus()
 				save_data()
 				graph()
 			elif x == "cancel":
 				$line.hide()
 				$line.clear()
-				$VBoxContainer/list.grab_focus()
+				$list.grab_focus()
 
 func cycle(y):
 	if !$line.visible:
-		if $VBoxContainer/list.is_selected(0):
+		if $list.is_selected(0):
 			if tables.size() == 0:
 				return
 			if tables.size() >= 1:
-				var a = $VBoxContainer/list.get_item_text(0)
+				var a = $list.get_item_text(0)
 				var b = tables.find(a)
 				if y == "right":
 					b = b + 1
 				elif y == "left":
 					b = b - 1
 				if b >= tables.size():
-					$VBoxContainer/list.set_item_text(0, tables.get(0))
+					$list.set_item_text(0, tables.get(0))
 				elif b <= -1:
-					$VBoxContainer/list.set_item_text(0, tables.back())
+					$list.set_item_text(0, tables.back())
 				else:
-					$VBoxContainer/list.set_item_text(0, tables.get(b))
+					$list.set_item_text(0, tables.get(b))
 				graph()
-		if $VBoxContainer/list.is_selected(2):
+		if $list.is_selected(2):
 			if data.size() >= 1:
-				var a = $VBoxContainer/list.get_item_text(2)
+				var a = $list.get_item_text(2)
 				var b = data.keys().find(a)
 				if y == "right":
 					b = b + 1
 				elif y == "left":
 					b = b - 1
 				if b >= data.keys().size():
-					$VBoxContainer/list.set_item_text(2, data.keys().get(0))
+					$list.set_item_text(2, data.keys().get(0))
 				elif b <= -1:
-					$VBoxContainer/list.set_item_text(2, data.keys().back())
+					$list.set_item_text(2, data.keys().back())
 				else:
-					$VBoxContainer/list.set_item_text(2, data.keys().get(b))
+					$list.set_item_text(2, data.keys().get(b))
 
 var average = false
 var avgt = 10
 func graph():
 	if  data == {}:
 		return
-	elif !data[$VBoxContainer/list.get_item_text(2)]:
+	elif !data[$list.get_item_text(2)]:
 		return
 	else:
 		for n in data.keys().size():
 			var player = data.keys().get(n)
-			if data[player].has($VBoxContainer/list.get_item_text(0)):
-				$VBoxContainer/graph.show()
+			if data[player].has($list.get_item_text(0)):
+				$graph.show()
 				break
 			else:
 				if n == (data.keys().size() - 1):
-					$VBoxContainer/graph.hide()
+					$graph.hide()
 					return
 				continue
 	var chart_scene: PackedScene = load("res://addons/easy_charts/control_charts/chart.tscn")
 	var chart: Chart = chart_scene.instantiate()
 	add_child(chart)
-	chart.reparent($VBoxContainer/graph)
+	chart.reparent($graph)
 	chart.queue_redraw()
 	var draws: Array[Function] = []
 	var color = Color(1.0, 1.0, 1.0, 1.0)
 	for n in data.keys().size():
 		var player = data.keys().get(n)
-		if !data[player].has($VBoxContainer/list.get_item_text(0)):
+		if !data[player].has($list.get_item_text(0)):
 			continue
-		var score = data[player][$VBoxContainer/list.get_item_text(0)]
+		var score = data[player][$list.get_item_text(0)]
 		if score == []:
 			score = [0]
 			
@@ -354,16 +354,16 @@ func _on_up_pressed() -> void:
 	vertical = vertical - 1
 	if vertical <= -1:
 		vertical = 2
-		$VBoxContainer/list.select(2)
+		$list.select(2)
 	else:
-		$VBoxContainer/list.select(vertical)
+		$list.select(vertical)
 func _on_down_pressed() -> void:
 	vertical = vertical + 1
 	if vertical >= 3:
 		vertical = 0
-		$VBoxContainer/list.select(0)
+		$list.select(0)
 	else:
-		$VBoxContainer/list.select(vertical)
+		$list.select(vertical)
 func _on_right_pressed() -> void:
 	cycle("right")
 func _on_left_pressed() -> void:
