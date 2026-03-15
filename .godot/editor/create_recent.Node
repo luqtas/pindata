@@ -1,5 +1,7 @@
-ColorRect
-LineEdit
+Control
 TextEdit
+LineEdit
+RichTextLabel
+ColorRect
 HBoxContainer
 VBoxContainer

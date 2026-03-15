@@ -12,15 +12,24 @@ func _ready() -> void:
 var save_path = "user://save/data.save"
 
 var last = []
+
+var table_info = {}
+var score_info = {}
+var player_info = {}
+
 func save_data():
 	last.clear()
 	last.append($list.get_item_text(0)) # last table at the app
 	last.append($list.get_item_text(2)) # last user
 	last.append(average) # was average activated?
+	#last.append($list.get_selected_items()) # do we?
 	var file = FileAccess.open(save_path, FileAccess.WRITE)
 	file.store_var(tables)
 	file.store_var(data)
 	file.store_var(last)
+	file.store_var(table_info)
+	file.store_var(score_info)
+	file.store_var(player_info)
 func load_data():
 	if FileAccess.file_exists(save_path):
 		# file was found
@@ -28,6 +37,9 @@ func load_data():
 		tables = file.get_var()
 		data = file.get_var()
 		last = file.get_var()
+		table_info = file.get_var()
+		score_info = file.get_var()
+		player_info = file.get_var()
 		$list.set_item_text(0, last.get(0)) # set last table app had
 		$list.set_item_text(2, last.get(1)) # last user
 		average = last.get(2) # toggles average
@@ -56,18 +68,20 @@ var data = {}
 func _input(event: InputEvent) -> void:
 	# had to handle input this way as simulating ui_presses with buttons
 	# didn't worked!
-	if Input.is_action_pressed("ui_right"):
-		cycle("right")
-	elif Input.is_action_pressed("ui_left"):
-		cycle("left")
-	elif Input.is_action_pressed("ui_accept"):
-		mods("accept")
-	elif Input.is_action_pressed("ui_cancel"):
-		mods("cancel")
-	elif Input.is_action_pressed("ui_text_backspace"):
-		mods("backspace")
-	elif Input.is_action_pressed("ui_text_delete"):
-		mods("delete")
+	
+	if $list.has_focus() or $line.has_focus():
+		if Input.is_action_pressed("right_arrow"):
+			cycle("right")
+		elif Input.is_action_pressed("left_arrow"):
+			cycle("left")
+		elif Input.is_action_pressed("ui_accept"):
+			mods("accept")
+		elif Input.is_action_pressed("ui_cancel"):
+			mods("cancel")
+		elif Input.is_action_pressed("ui_text_backspace"):
+			mods("backspace")
+		elif Input.is_action_pressed("ui_text_delete"):
+			mods("delete")
 
 func mods(x):
 	if $list.is_selected(0):
@@ -213,6 +227,7 @@ func mods(x):
 				$line.hide()
 				$line.clear()
 				$list.grab_focus()
+	info()
 
 func cycle(y):
 	if !$line.visible:
@@ -247,6 +262,7 @@ func cycle(y):
 					$list.set_item_text(2, data.keys().back())
 				else:
 					$list.set_item_text(2, data.keys().get(b))
+	info()
 
 var average = false
 var avgt = 10
@@ -378,3 +394,85 @@ func _on_delete_pressed() -> void:
 func _on_redo_pressed() -> void:
 	if $mods/lock.button_pressed:
 		mods("backspace")
+
+
+func _on_list_item_selected(index: int) -> void:
+	if $list.is_selected(0):
+		$"background 2/table info".show()
+		$"background 2/score info".hide()
+		$"background 2/player info".hide()
+		info()
+	elif $list.is_selected(1):
+		$"background 2/table info".hide()
+		$"background 2/score info".show()
+		$"background 2/player info".hide()
+		info()
+	else:
+		$"background 2/table info".hide()
+		$"background 2/score info".hide()
+		$"background 2/player info".show()
+		info()
+
+func info():
+	if $list.is_selected(0):
+		if  table_info == null:
+			$"background 2/table info/TextEdit".clear()
+			$"background 2/table info/LineEdit".clear()
+			return
+		elif !table_info.has($list.get_item_text(0)):
+			$"background 2/table info/TextEdit".clear()
+			$"background 2/table info/LineEdit".clear()
+			return
+		else:
+			if table_info[$list.get_item_text(0)].has("ipdb"):
+				if table_info[$list.get_item_text(0)]["ipdb"] == "0":
+					$"background 2/table info/LineEdit".clear()
+				else:
+					$"background 2/table info/LineEdit".text = table_info[$list.get_item_text(0)]["ipdb"]
+			else:
+				$"background 2/table info/LineEdit".clear()
+			$"background 2/table info/TextEdit".text = table_info[$list.get_item_text(0)]["text"]
+	
+	elif $list.is_selected(1):
+		pass
+	
+	else: # $list.is_selected(2)
+		pass
+
+# TABLE
+func _on_line_edit_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			if event.shift_pressed:
+				$"background 2/table info/LineEdit".focus_mode = FOCUS_ALL
+				return
+			if table_info != null and table_info.has($list.get_item_text(0)):
+				OS.shell_open("https://www.ipdb.org/machine.cgi?id=%s" % table_info[$list.get_item_text(0)]["ipdb"])
+	elif  event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_focus_next"):
+		if table_info == null:
+			table_info = {}
+		if !table_info.has($list.get_item_text(0)):
+			table_info.get_or_add($list.get_item_text(0))
+			table_info[$list.get_item_text(0)] = {}
+		table_info[$list.get_item_text(0)].get_or_add("ipdb")
+		if $"background 2/table info/LineEdit".text.is_valid_int() and $"background 2/table info/LineEdit".text != "0":
+			table_info[$list.get_item_text(0)]["ipdb"] = $"background 2/table info/LineEdit".text
+		else:
+			table_info[$list.get_item_text(0)]["ipdb"] = "0"
+			$"background 2/table info/LineEdit".clear()
+		save_data()
+		$"background 2/table info/LineEdit".focus_mode = FOCUS_NONE
+		$"background 2/table info/TextEdit".grab_focus()
+
+func _on_text_edit_focus_exited() -> void:
+	if table_info == null:
+		table_info = {}
+	if !table_info.has($list.get_item_text(0)):
+		table_info.get_or_add($list.get_item_text(0))
+		table_info[$list.get_item_text(0)] = {}
+	table_info[$list.get_item_text(0)].get_or_add("text")
+	table_info[$list.get_item_text(0)]["text"] = $"background 2/table info/TextEdit".text
+	save_data()
+	# do we save the text towards the $TABLE only or should we consider $PLAYER too?
+	# TODO: why not both? cycling through a generic commentary and user should be
+	#		about pressing some key? S-TAB!?

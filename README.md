@@ -16,3 +16,6 @@ when 'player' is selected
   · DELETE the player
 
 buttons on the screen were meant to facilitate mobile usage, gotta test although... the "LOCK" button unlocks "X" (DELETE) and "REDO" (BACKSPACE) functionality
+
+# TODO
+  - special shortcut for selecting/typing players on the session, so after a score entry, we move to the next player (then it cycles back to the 1st) automatically... problem is: how the UI for assigning players looks like!?

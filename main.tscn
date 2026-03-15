@@ -7,6 +7,10 @@ bg_color = Color(0.46229059, 0.46229064, 0.4622904, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ig7tw"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0xm2m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h2yge"]
+
 [node name="Control" type="Control" unique_id=1908926735]
 layout_mode = 3
 anchors_preset = 15
@@ -16,45 +20,128 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_272bh")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=949139796]
-layout_mode = 0
-offset_right = 800.0
-offset_bottom = 460.0
+[node name="background 1" type="ColorRect" parent="." unique_id=949139796]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -680.0
+offset_bottom = -121.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+
+[node name="background 2" type="ColorRect" parent="." unique_id=296472263]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -680.0
+offset_bottom = 581.0
+grow_horizontal = 0
+color = Color(0.4627451, 0.4627451, 0.4627451, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="background 2" unique_id=1502667022]
+visible = false
+layout_mode = 0
+offset_left = 118.0
+offset_top = 47.0
+offset_right = 493.0
+offset_bottom = 463.0
+text = "if TABLE is selected, player should have a text edit where they can inform the IPDB ID and any other note like difficulty set on VPX or whatever?
+
+if SCORE is selected we have an average of all points (all players or/and selected player), the highest score, the lowest and the last score added (if we don't parse that info to SCORE field itself)
+
+if PLAYER is selected we show weird stats like, all scores summed in total or/and for the table selected; total amount of games played for the table (or should it be at score? maybe not as it may infer comparisons between users), as well the total numbers of plays (gp) in all tables they are registered and whatever"
+
+[node name="table info" type="Control" parent="background 2" unique_id=932771331]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LineEdit" type="LineEdit" parent="background 2/table info" unique_id=24254557]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.94000006
+anchor_top = 0.031000001
+anchor_right = 0.94000006
+anchor_bottom = 0.031000001
+offset_left = 493.4
+offset_top = 16.76
+offset_right = 601.9
+offset_bottom = 47.76
+grow_horizontal = 0
+focus_mode = 0
+placeholder_text = "ipdb"
+alignment = 1
+virtual_keyboard_enabled = false
+
+[node name="TextEdit" type="TextEdit" parent="background 2/table info" unique_id=646979935]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 20.75
+offset_top = 54.0
+offset_right = 619.25
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_input_mode = false
+
+[node name="score info" type="Control" parent="background 2" unique_id=335529056]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="player info" type="Control" parent="background 2" unique_id=1014566655]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="graph" type="Control" parent="." unique_id=286374440]
 layout_mode = 1
 anchors_preset = 0
-offset_right = 800.0
+offset_right = 680.0
 offset_bottom = 460.0
+
+[node name="line" type="LineEdit" parent="." unique_id=1140249054]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -290.5
+offset_right = -80.0
+offset_bottom = -246.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 26
+alignment = 1
 
 [node name="list" type="ItemList" parent="." unique_id=1863007880]
 layout_mode = 0
 offset_top = 460.0
-offset_right = 800.0
+offset_right = 680.0
 offset_bottom = 581.0
 size_flags_vertical = 3
+theme_override_colors/guide_color = Color(0.4627451, 0.4627451, 0.4627451, 1)
 theme_override_font_sizes/font_size = 26
 theme_override_styles/panel = SubResource("StyleBoxFlat_ig7tw")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ig7tw")
+theme_override_styles/selected = SubResource("StyleBoxEmpty_0xm2m")
+theme_override_styles/selected_focus = SubResource("StyleBoxEmpty_h2yge")
 allow_search = false
 item_count = 3
 item_0/text = "table"
 item_1/text = "score"
 item_2/text = "player"
-
-[node name="line" type="LineEdit" parent="." unique_id=1140249054]
-visible = false
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -239.625
-offset_right = 239.62512
-offset_bottom = 44.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 26
-alignment = 1
 
 [node name="mods" type="Control" parent="." unique_id=1674034741]
 visible = false
@@ -137,7 +224,10 @@ offset_right = 97.0
 offset_bottom = 16.0
 text = "right"
 
+[connection signal="gui_input" from="background 2/table info/LineEdit" to="." method="_on_line_edit_gui_input"]
+[connection signal="focus_exited" from="background 2/table info/TextEdit" to="." method="_on_text_edit_focus_exited"]
 [connection signal="draw" from="line" to="." method="_on_line_draw"]
+[connection signal="item_selected" from="list" to="." method="_on_list_item_selected"]
 [connection signal="button_down" from="mods/enter" to="." method="_on_enter_pressed"]
 [connection signal="button_down" from="mods/delete" to="." method="_on_delete_pressed"]
 [connection signal="button_down" from="mods/redo" to="." method="_on_redo_pressed"]
