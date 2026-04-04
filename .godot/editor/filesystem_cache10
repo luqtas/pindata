@@ -1,10 +1,10 @@
 72322a848ab928aa5c89f0cb78209805
-::res://::1773546405
+::res://::1775312160
 easy_charts.svg::CompressedTexture2D::9187309372371619845::1772932538::1772932738::1::::<><><>0<>0<>4650c3287040c083b122f4363db1d29d<>res://.godot/imported/easy_charts.svg-5963eccbc8d55a9c4bb3a7a394bde2c4.ctex::
-export_presets.cfg::TextFile::-1::1773360679::0::1::::<><><>0<>0<><>::
+export_presets.cfg::TextFile::-1::1774359316::0::1::::<><><>0<>0<><>::
 icon.svg::CompressedTexture2D::3836697351442047889::1759448755::1759449058::1::::<><><>0<>0<>0034110c7cf56e22d83311b7567864bf<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-main.gd::GDScript::4248422490038241731::1773546394::0::1::::<>Control<><>0<>0<><>::
-main.tscn::PackedScene::6794672674433734128::1773546394::0::1::::<><><>0<>0<><>::uid://b1r75r0smrdsl::::res://main.gd
+main.gd::GDScript::4248422490038241731::1774359308::0::1::::<>Control<><>0<>0<><>::
+main.tscn::PackedScene::6794672674433734128::1774359308::0::1::::<><><>0<>0<><>::uid://b1r75r0smrdsl::::res://main.gd
 README.md::TextFile::-1::1772936034::0::1::::<><><>0<>0<><>::
 ::res://addons/::1772932538
 ::res://addons/easy_charts/::1772932738

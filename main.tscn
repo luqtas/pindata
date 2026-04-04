@@ -97,6 +97,46 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="average player" type="Label" parent="background 2/score info" unique_id=2091531313]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 45.0
+offset_right = 176.0
+offset_bottom = 68.0
+text = "AVERAGE (ALL) = "
+
+[node name="average all" type="Label" parent="background 2/score info" unique_id=696867625]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 437.0
+offset_right = 206.0
+offset_bottom = 460.0
+text = "AVERAGE (ALL) = "
+
+[node name="high score" type="Label" parent="background 2/score info" unique_id=1864573850]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 105.0
+offset_right = 158.0
+offset_bottom = 128.0
+text = "HIGH SCORE = "
+
+[node name="low score" type="Label" parent="background 2/score info" unique_id=224358401]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 135.0
+offset_right = 154.0
+offset_bottom = 158.0
+text = "LOW SCORE = "
+
+[node name="last score" type="Label" parent="background 2/score info" unique_id=583640908]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 75.0
+offset_right = 155.0
+offset_bottom = 98.0
+text = "LAST SCORE = "
+
 [node name="player info" type="Control" parent="background 2" unique_id=1014566655]
 anchors_preset = 0
 offset_right = 40.0

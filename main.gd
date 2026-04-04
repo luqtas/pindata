@@ -6,16 +6,14 @@ func _ready() -> void:
 	$list.grab_focus()
 	$list.select(2)
 	load_data()
+	score_info()
 
 # why inside a folder? for Syncthing! otherwise we would need to mess
 # with exclude.lists
 var save_path = "user://save/data.save"
 
 var last = []
-
 var table_info = {}
-var score_info = {}
-var player_info = {}
 
 func save_data():
 	last.clear()
@@ -28,8 +26,6 @@ func save_data():
 	file.store_var(data)
 	file.store_var(last)
 	file.store_var(table_info)
-	file.store_var(score_info)
-	file.store_var(player_info)
 func load_data():
 	if FileAccess.file_exists(save_path):
 		# file was found
@@ -38,8 +34,6 @@ func load_data():
 		data = file.get_var()
 		last = file.get_var()
 		table_info = file.get_var()
-		score_info = file.get_var()
-		player_info = file.get_var()
 		$list.set_item_text(0, last.get(0)) # set last table app had
 		$list.set_item_text(2, last.get(1)) # last user
 		average = last.get(2) # toggles average
@@ -52,6 +46,7 @@ func load_data():
 			DirAccess.make_dir_absolute('user://save')
 func _exit_tree() -> void:
 	save_data()
+
 # Android stuff, as closing the app the way i do, doesn't run _exit_tree
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -91,11 +86,12 @@ func mods(x):
 		elif x == "delete" and !$line.visible:
 			if $list.get_item_text(0) == "table":
 				return
-			for n in data.keys().size():
+			for n in data.keys().size(): # wtf
 				var z = data.keys()
 				var y = z.get(n)
 				data[y].erase($list.get_item_text(0))
 			tables.erase($list.get_item_text(0))
+			table_info.erase($list.get_item_text(0))
 			if tables.size() - 1 == -1:
 				$list.set_item_text(0, "table")
 			else:
@@ -434,10 +430,45 @@ func info():
 			$"background 2/table info/TextEdit".text = table_info[$list.get_item_text(0)]["text"]
 	
 	elif $list.is_selected(1):
-		pass
+		score_info()
 	
 	else: # $list.is_selected(2)
 		pass
+
+func score_info():
+	if !data[$list.get_item_text(2)].has($list.get_item_text(0)) or data[$list.get_item_text(2)][$list.get_item_text(0)] == []:
+		$"background 2/score info/average player".text = "AVERAGE (PLAYER) ="
+		$"background 2/score info/average all".text = "AVERAGE (ALL) ="
+		$"background 2/score info/high score".text = "HIGHEST SCORE ="
+		$"background 2/score info/low score".text = "LOWEST SCORE ="
+		$"background 2/score info/last score".text = "LAST SCORE ="
+		return
+	
+	# USER AVERAGE SCORE
+	var x = data[$list.get_item_text(2)][$list.get_item_text(0)].size()
+	var avr = 0
+	for i in x:
+		avr += data[$list.get_item_text(2)][$list.get_item_text(0)].get(i)
+	avr = int(avr / x)
+	$"background 2/score info/average player".text = "AVERAGE (PLAYER) = %s" % [avr]
+	
+	var max = data[$list.get_item_text(2)][$list.get_item_text(0)].max()
+	$"background 2/score info/high score".text = "HIGHEST SCORE = %s" % [max]
+	var min = data[$list.get_item_text(2)][$list.get_item_text(0)].min()
+	$"background 2/score info/low score".text = "LOWEST SCORE = %s" % [min]
+	var last = data[$list.get_item_text(2)][$list.get_item_text(0)][-1]
+	$"background 2/score info/last score".text = "LAST SCORE = %s" % [last]
+	
+	# ALL USERS AVERAGE SCORE!
+	x = data.keys().size()
+	avr = 0
+	for i in x:
+		var usr = data.keys()[i]
+		var usravg = data[usr][$list.get_item_text(0)].size()
+		for ii in usravg:
+			avr += data[usr][$list.get_item_text(0)].get(ii)
+		avr = avr / usravg
+	$"background 2/score info/average all".text = "AVERAGE (ALL) = %s" % [avr]
 
 # TABLE
 func _on_line_edit_gui_input(event: InputEvent) -> void:
@@ -448,13 +479,17 @@ func _on_line_edit_gui_input(event: InputEvent) -> void:
 				return
 			if table_info != null and table_info.has($list.get_item_text(0)):
 				OS.shell_open("https://www.ipdb.org/machine.cgi?id=%s" % table_info[$list.get_item_text(0)]["ipdb"])
+	
 	elif  event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_focus_next"):
+		
+		# we only have this block in case someone with an old save decides to edit the IPDB before adding any text!
 		if table_info == null:
 			table_info = {}
 		if !table_info.has($list.get_item_text(0)):
 			table_info.get_or_add($list.get_item_text(0))
 			table_info[$list.get_item_text(0)] = {}
 		table_info[$list.get_item_text(0)].get_or_add("ipdb")
+		
 		if $"background 2/table info/LineEdit".text.is_valid_int() and $"background 2/table info/LineEdit".text != "0":
 			table_info[$list.get_item_text(0)]["ipdb"] = $"background 2/table info/LineEdit".text
 		else:
@@ -475,4 +510,4 @@ func _on_text_edit_focus_exited() -> void:
 	save_data()
 	# do we save the text towards the $TABLE only or should we consider $PLAYER too?
 	# TODO: why not both? cycling through a generic commentary and user should be
-	#		about pressing some key? S-TAB!?
+	#		about pressing some key? S-TAB!? remember to get input from RELEASE and not PRESSED

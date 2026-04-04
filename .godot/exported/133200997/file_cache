@@ -2,7 +2,7 @@ res://addons/easy_charts/control_charts/chart.tscn::c603f6faffe87b8373003781182c
 res://addons/easy_charts/utilities/containers/data_tooltip/data_tooltip.tscn::6b11909aca76f7b84c58cb95a0d5b9d5::1759432335::res://.godot/exported/133200997/export-fe6dec1dc37ba314bd25551a760bad4e-data_tooltip.scn
 res://addons/easy_charts/utilities/containers/legend/function_label.tscn::1efa5f7b7da0856e980cf1fb56e6842d::1759432335::res://.godot/exported/133200997/export-cbd950603853f44b5f617335d88563cc-function_label.scn
 res://addons/easy_charts/utilities/containers/legend/function_legend.tscn::d4a41538fa5621397b7bee8bd6093647::1759432335::res://.godot/exported/133200997/export-81dd362871f4dc451235a924b89fb3c6-function_legend.scn
-res://main.tscn::ab5972e5c007a993b1c5943ceb9c8d81::1772935686::res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn
+res://main.tscn::7ebc8b686e1cda9190c6b751709322fc::1774359308::res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn
 res://addons/easy_charts/examples/area_chart/Control.tscn::fc9375e4ec6ab914c561dad059ecdb08::1772932538::res://.godot/exported/133200997/export-5f55ae82880458ba3cbc3aada28953f5-Control.scn
 res://addons/easy_charts/examples/bar_chart/Control.tscn::2784e180788f4f13acc0d3a368c797d0::1772932538::res://.godot/exported/133200997/export-3f063c603c5516ab62a92cb36c98e3a1-Control.scn
 res://addons/easy_charts/examples/line_chart/Control.tscn::5473bcfab2b98113b9f180eba323148a::1772932538::res://.godot/exported/133200997/export-c804a3940a6251cb83a375b8316d840b-Control.scn
